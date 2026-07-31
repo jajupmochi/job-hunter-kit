@@ -60,7 +60,14 @@ jobs:
         # but left in history is still published, so history is checked separately.
         run: |
           PAT=$(grep -vE '^[[:space:]]*(#|$)' .private-identifiers | paste -sd'|' -)
-          hits=$(git log --all -p --unified=0 | grep -E '^\+' | grep -InE "$PAT" || true)
+          # The owner's handle unavoidably appears in this repository's own clone URL, and
+          # that one occurrence is intentional. Allowed only on a line that names THIS
+          # repository, the same allowance the local preflight makes. GITHUB_REPOSITORY is
+          # "owner/name" and is always set in Actions.
+          hits=$(git log --all -p --unified=0 \
+                 | grep -E '^\+' \
+                 | grep -InE "$PAT" \
+                 | grep -vF "${GITHUB_REPOSITORY}" || true)
           if [ -n "$hits" ]; then
             echo "$hits" | head -50
             echo "::error::A private identifier appears in git history. Removing it from the tree is not enough; the history has to be rewritten."
