@@ -248,33 +248,38 @@ I needed it to fit an academic search, with LaTeX CV variants, a second language
 step that runs before I ever see a draft rather than one I could skip. That is the kind of thing
 you adapt in any fork.
 
-The reasons it became its own thing came later, out of a search that ran for months, and they
-are real choices rather than a smaller version of the same idea:
+I will not pretend it out-features career-ops. It does not, in almost any direction. **What this
+kit really is, is the method from one real search written down as rules sharp enough to survive
+being handed to a stranger in another field.** If there is a reason to use it, it is those rules,
+not a feature the bigger systems lack. The [`lessons/`](lessons/) are the product here; everything
+else exists to make an agent actually follow them.
 
-- **Drafts-only is structural here, not a setting.** Nothing in the repository can send, connect
-  or post, and the review step before a send is forced rather than optional. career-ops has an
-  approval gate; this kit has an architecture with no send in it at all. If the one thing you
-  want guaranteed is that nothing goes out without you, that guarantee is easier to trust when it
-  is built in than when it is a prompt.
-- **The lessons are the product.** [`lessons/`](lessons/) is a numbered, accumulating library
-  written so each rule holds for a nurse or a lawyer as much as for me, and adding to it after a
-  mistake is a first-class step, not a note in a heuristics file. If you value a search that
-  teaches you something you keep, this is where that lives.
-- **The privacy split is designed for publishing the method openly.** Two repositories rather
-  than one gitignored layer, and a check that scans git history for people's names rather than
-  only for secrets. This whole kit is the proof that it was needed: extracting a public method
-  from a private search is exactly where names leak, and this is built for that job.
-- **The today list is recomputed from the records every time.** career-ops carries an append-only
-  checklist forward between sessions by design; this kit refuses to, because a carried-forward
-  list is how a stale item outlives the reason it was ever on it. Opposite bets, and this one is
-  deliberate.
+The ones I would point at first, because they cost me something to learn:
 
-**Which to pick.** If you want the broadest, most battle-tested system, with more portals, more
-languages, more CLIs and features this does not have, career-ops is the one to reach for, and it
-is excellent. Reach for this kit if what you specifically want is a search whose method you can
-publish without leaking anyone, whose rules travel with you afterwards, and where drafts-only is a
-property of the design rather than a promise. They are different bets on the same problem, and
-this one is mine.
+- **A search that finds nothing is a claim about your search, not the world**
+  ([G-11](lessons/G-11-a-negative-is-a-fact-about-your-method.md)). Before you believe "no
+  results", run the identical search against something you know is there. Zero hits is the most
+  over-trusted result in a job hunt, and it is usually a broken query, a stale mirror, or a page
+  that returned nothing while looking like it returned a page.
+- **A working link is not proof you may apply**
+  ([G-12](lessons/G-12-read-the-eligibility-clause-first.md)). The citizenship, work-rights or
+  years-since-graduation clause that disqualifies you sits at the bottom of the advert, which is
+  exactly where a quick read stops. Read it before you spend a day on the application, and when
+  you find one you missed, re-check the whole batch.
+- **Every claim traces to a source, or it is marked unknown**
+  ([G-07](lessons/G-07-every-claim-has-a-source.md)). No number remembered rather than re-checked,
+  no title inflated, no "led" for work you contributed to. One invented detail, caught, ends the
+  application, and there is no upside that pays for the risk.
+- **Writing that does not read as machine-written**
+  ([the voice guide](docs/APPLICATION_VOICE_AND_STYLE.md)). The specific constructions that give
+  an AI draft away, and how to take them out without flattening your own voice into a generic one.
+
+Those are hard-won and they transfer. That is the honest pitch.
+
+**Which to pick.** For the broadest, most battle-tested system, with more portals, more languages,
+more CLIs and features this does not have, reach for career-ops; it is excellent. Reach for this
+if what you want is the method itself, compact and portable, with drafts-only as the one line it
+will not cross. Different bets on the same problem, and this one is mine.
 
 ## Related projects
 
@@ -288,7 +293,7 @@ you are choosing between them.
 
 | Project | What it is | Licence | Stars | Compared to this kit |
 |---|---|---|---|---|
-| [santifer/career-ops](https://github.com/santifer/career-ops) | The upstream this forked from; a full AI job-search system | MIT | ~62k | **The mature choice, and it does more.** Its liveness check spans English, German and French closure banners and deliberately treats a bot wall as uncertain rather than closed, which is the same idea as this kit's read-versus-closed tag but further along. It also has a debrief mode, a voice file, a scam-and-ghost-job check, salary and negotiation help, adapters for nine CLIs, and seventeen languages. This kit bets differently on four things: drafts-only built into the architecture rather than an approval gate, the lessons as a numbered cross-profession library that is the point rather than a side file, a two-repository split with a git-history name scan built for publishing the method safely, and a today list recomputed fresh where career-ops carries an append-only one forward. See the acknowledgements for the full comparison. |
+| [santifer/career-ops](https://github.com/santifer/career-ops) | The upstream this forked from; a full AI job-search system | MIT | ~62k | **The mature choice, and it does more.** Its liveness check spans English, German and French closure banners and deliberately treats a bot wall as uncertain rather than closed, which is the same idea as this kit's read-versus-closed tag but further along. It also has a debrief mode, a voice file, a scam-and-ghost-job check, salary and negotiation help, adapters for nine CLIs, and seventeen languages. This kit does not out-feature it and does not try to. What it offers instead is the method distilled into a compact set of transferable rules, the [`lessons/`](lessons/), with drafts-only as the one line it will not cross. See the acknowledgements for the honest comparison. |
 | [MadsLorentzen/ai-job-search](https://github.com/MadsLorentzen/ai-job-search) | A Claude Code repo you fork and fill with your profile | MIT | ~29k | The closest peer. Its follow-up is drafts-only and capped, its apply step reads the compiled PDF as an ATS would and keeps an unsupported keyword as a visible gap rather than stuffing it, and it archives the exact CV and letter per outcome. It ships per-portal search CLIs with real test suites, plus Gmail and Notion sync, which this kit does not. |
 | [ARPeeketi/claude-resume-kit](https://github.com/ARPeeketi/claude-resume-kit) | Tailors an academic CV from a verified knowledge base | MIT | ~200 | The closest to this kit's anti-fabrication stance: per-achievement provenance flags, verb discipline against overclaiming, and a corrections log so a fixed error does not return. Academic LaTeX only; no scanning, tracking or liveness. |
 | [wanyichen06/LLMInternSkill](https://github.com/wanyichen06/LLMInternSkill) | Grades every resume line against your real evidence | MIT | ~260 | Sorts each claim into can-write, write-with-care, and cannot-write, then questions you on them. The same evidence discipline this kit applies to postings, applied instead to resume claims. Scoped to one hiring market; no search or tracker. |
