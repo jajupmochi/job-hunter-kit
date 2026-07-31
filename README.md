@@ -243,14 +243,38 @@ follow-up, tracker, interview prep, the single-company deep dive, the profile te
 shared context file. I used several of them almost unchanged for months before rewriting them
 here.
 
-What grew on this side is a different set: the drafts-only rule as an absolute instead of an
-option, the [`lessons/`](lessons/) library where mistakes turn into rules,
-[`modes/debrief.md`](modes/debrief.md), and the privacy tooling. All of that was forced out of
-one search that ran for months and got things wrong along the way.
+**So why not just use career-ops?** For a while I did. The first reason to diverge was ordinary:
+I needed it to fit an academic search, with LaTeX CV variants, a second language, and a review
+step that runs before I ever see a draft rather than one I could skip. That is the kind of thing
+you adapt in any fork.
 
-**If you are choosing between the two, start with career-ops.** It is far more mature, it has a
-much larger community, and it covers more ground. This kit is narrower and more opinionated,
-especially about never letting an agent send anything.
+The reasons it became its own thing came later, out of a search that ran for months, and they
+are real choices rather than a smaller version of the same idea:
+
+- **Drafts-only is structural here, not a setting.** Nothing in the repository can send, connect
+  or post, and the review step before a send is forced rather than optional. career-ops has an
+  approval gate; this kit has an architecture with no send in it at all. If the one thing you
+  want guaranteed is that nothing goes out without you, that guarantee is easier to trust when it
+  is built in than when it is a prompt.
+- **The lessons are the product.** [`lessons/`](lessons/) is a numbered, accumulating library
+  written so each rule holds for a nurse or a lawyer as much as for me, and adding to it after a
+  mistake is a first-class step, not a note in a heuristics file. If you value a search that
+  teaches you something you keep, this is where that lives.
+- **The privacy split is designed for publishing the method openly.** Two repositories rather
+  than one gitignored layer, and a check that scans git history for people's names rather than
+  only for secrets. This whole kit is the proof that it was needed: extracting a public method
+  from a private search is exactly where names leak, and this is built for that job.
+- **The today list is recomputed from the records every time.** career-ops carries an append-only
+  checklist forward between sessions by design; this kit refuses to, because a carried-forward
+  list is how a stale item outlives the reason it was ever on it. Opposite bets, and this one is
+  deliberate.
+
+**Which to pick.** If you want the broadest, most battle-tested system, with more portals, more
+languages, more CLIs and features this does not have, career-ops is the one to reach for, and it
+is excellent. Reach for this kit if what you specifically want is a search whose method you can
+publish without leaking anyone, whose rules travel with you afterwards, and where drafts-only is a
+property of the design rather than a promise. They are different bets on the same problem, and
+this one is mine.
 
 ## Related projects
 
@@ -264,7 +288,7 @@ you are choosing between them.
 
 | Project | What it is | Licence | Stars | Compared to this kit |
 |---|---|---|---|---|
-| [santifer/career-ops](https://github.com/santifer/career-ops) | The upstream this forked from; a full AI job-search system | MIT | ~62k | **The mature choice, and it does more.** Its liveness check spans English, German and French closure banners and deliberately treats a bot wall as uncertain rather than closed, which is the same idea as this kit's read-versus-closed tag but further along. It also has a debrief mode, a voice file, a scam-and-ghost-job check, salary and negotiation help, adapters for nine CLIs, and seventeen languages. Where this kit is different is narrower: drafts-only as an absolute, a compact generalizable lesson set, and a two-repository privacy split with a history scan for names. |
+| [santifer/career-ops](https://github.com/santifer/career-ops) | The upstream this forked from; a full AI job-search system | MIT | ~62k | **The mature choice, and it does more.** Its liveness check spans English, German and French closure banners and deliberately treats a bot wall as uncertain rather than closed, which is the same idea as this kit's read-versus-closed tag but further along. It also has a debrief mode, a voice file, a scam-and-ghost-job check, salary and negotiation help, adapters for nine CLIs, and seventeen languages. This kit bets differently on four things: drafts-only built into the architecture rather than an approval gate, the lessons as a numbered cross-profession library that is the point rather than a side file, a two-repository split with a git-history name scan built for publishing the method safely, and a today list recomputed fresh where career-ops carries an append-only one forward. See the acknowledgements for the full comparison. |
 | [MadsLorentzen/ai-job-search](https://github.com/MadsLorentzen/ai-job-search) | A Claude Code repo you fork and fill with your profile | MIT | ~29k | The closest peer. Its follow-up is drafts-only and capped, its apply step reads the compiled PDF as an ATS would and keeps an unsupported keyword as a visible gap rather than stuffing it, and it archives the exact CV and letter per outcome. It ships per-portal search CLIs with real test suites, plus Gmail and Notion sync, which this kit does not. |
 | [ARPeeketi/claude-resume-kit](https://github.com/ARPeeketi/claude-resume-kit) | Tailors an academic CV from a verified knowledge base | MIT | ~200 | The closest to this kit's anti-fabrication stance: per-achievement provenance flags, verb discipline against overclaiming, and a corrections log so a fixed error does not return. Academic LaTeX only; no scanning, tracking or liveness. |
 | [wanyichen06/LLMInternSkill](https://github.com/wanyichen06/LLMInternSkill) | Grades every resume line against your real evidence | MIT | ~260 | Sorts each claim into can-write, write-with-care, and cannot-write, then questions you on them. The same evidence discipline this kit applies to postings, applied instead to resume claims. Scoped to one hiring market; no search or tracker. |
