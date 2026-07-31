@@ -44,7 +44,7 @@ down in the fastest available words.
 
 **The fix is not to stop prioritising.** It is to record the decision without the ranking:
 
-> Not: *"L3 — anywhere else. Only if fit is exceptional."*
+> Not: *"L3, anywhere else. Only if fit is exceptional."*
 > But: *"I can work in A and B without sponsorship. Elsewhere I would need a permit, so a role
 > there has to be worth that effort. Here is where I have decided the line sits."*
 

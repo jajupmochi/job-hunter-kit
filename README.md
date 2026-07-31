@@ -13,32 +13,18 @@ send.** There is no setting that changes that.
 
 ## What it does
 
-**Verifies things, and tells you how it verified them.** A posting counts as open only if it
-was fetched from the employer today. A link that opens is not proof you are allowed to apply,
-so it reads the eligibility clause first. And when a search comes back empty, that is a fact
-about the search, so it runs the same search against something it knows is there before
-believing the result.
-
-**Scans for new roles, within bounds.** You set how many rounds and how many roles per round.
-It reports what it found and what it could not reach, and **it never pads the list to hit the
-number**. Six real finds beat ten with four guesses.
-
-**Debriefs after anything happens.** An interview, a rejection, a reply, or a silence that has
-gone on long enough to mean something. Same day, while you still remember. Occasionally a
-debrief turns into a rule, and every rule in here started that way.
-
-**Accumulates rules alongside the applications.** Fifteen so far, each written after getting
-something wrong. Never auto-submit. Never invent a number, a title or a deadline. Read the
-eligibility clause before investing in a role, because it sits at the bottom of the advert
-where a truncated read never reaches.
-
-**Records your voice and your preferences.** How you actually write, which openings you would
-never use, which phrases are yours, and which kinds of position you do and do not want. **Not
-guessed; written down as you correct it**, which is why it stays right.
-
-**Builds one table for everything.** Generated from your records rather than kept by hand, so
-it cannot drift. It surfaces the two things people lose track of: packages that are finished
-and were never sent, and named contacts you have never used.
+| | |
+|---|---|
+| **Verifies things, and tells you how** | A posting counts as open only if it was fetched from the employer today. A link that opens is not proof you may apply, so it reads the eligibility clause first. When a search comes back empty it re-runs the same search against something it knows is there, because an empty result is a fact about the search. |
+| **Scans for new roles, within bounds** | You set how many rounds and how many roles per round. It reports what it found **and what it could not reach**, and it never pads the list to hit the number. Six real finds beat ten with four guesses. |
+| **Separates "could not read" from "closed"** | Every role carries a tag saying how it was checked: confirmed open, seen only on an aggregator, blocked, or confirmed gone. A page that would not load tells you about your connection, not about the job, and collapsing those two is how an automated search starts lying to you. |
+| **Debriefs after anything happens** | An interview, a rejection, a reply, or a silence that has gone on long enough to mean something. Same day, while you still remember. Occasionally a debrief turns into a rule, and every rule here started that way. |
+| **Accumulates rules alongside the applications** | Fifteen so far, each written after getting something wrong. Never auto-submit. Never invent a number, a title or a deadline. Read the eligibility clause before investing in a role, because it sits at the bottom of the advert where a truncated read never reaches. |
+| **Reviews before anything is sent** | A separate pass with six things that stop a send outright, including a claim you cannot trace, a number not re-checked today, and a letter that survives having the employer's name swapped for a competitor's. The person who wrote it cannot see it, which is why the pass is separate. |
+| **Records your voice and your preferences** | How you actually write, which openings you would never use, which phrases are yours, and which kinds of position you do and do not want. **Not guessed; written down as you correct it**, which is why it stays right. |
+| **Builds one table for everything** | Generated from your records rather than kept by hand, so it cannot drift. It surfaces the two things people lose track of: packages that are finished and were never sent, and named contacts you have never used. |
+| **Tells you what to do today** | A short list derived from the records every time, never carried forward: deadlines inside a week with nothing sent, finished packages with no send-by date, routes you have never used. "Nothing needs you today" is a valid answer. |
+| **Keeps your search private** | Two repositories, not one. Six checks before anything is published, covering your identifiers, other people named in passing, email addresses, private paths and leftovers from an anonymisation pass. The same checks run in CI, over the history as well as the files, because a name deleted from a file but left in history is still published. |
 
 ## What is in here
 
