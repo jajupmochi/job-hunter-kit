@@ -243,18 +243,14 @@ follow-up, tracker, interview prep, the single-company deep dive, the profile te
 shared context file. I used several of them almost unchanged for months before rewriting them
 here.
 
-**So why not just use career-ops?** For a while I did. The first reason to diverge was ordinary:
-I needed it to fit an academic search, with LaTeX CV variants, a second language, and a review
-step that runs before I ever see a draft rather than one I could skip. That is the kind of thing
-you adapt in any fork.
+**So why a separate kit?** It started as an adaptation, for an academic search: LaTeX CV variants,
+a second language, and a review step that runs before I ever see a draft. Then a search that ran
+for months turned it into something with a character of its own.
 
-I will not pretend it out-features career-ops. It does not, in almost any direction. **What this
-kit really is, is the method from one real search written down as rules sharp enough to survive
-being handed to a stranger in another field.** If there is a reason to use it, it is those rules,
-not a feature the bigger systems lack. The [`lessons/`](lessons/) are the product here; everything
-else exists to make an agent actually follow them.
-
-The ones I would point at first, because they cost me something to learn:
+**What this kit gives you is the method from a real search, distilled into rules sharp enough to
+hand to someone in a different field entirely.** The [`lessons/`](lessons/) are the product, and
+everything else exists to make an agent actually follow them. These are the ones worth the price
+of admission on their own:
 
 - **A search that finds nothing is a claim about your search, not the world**
   ([G-11](lessons/G-11-a-negative-is-a-fact-about-your-method.md)). Before you believe "no
@@ -274,16 +270,18 @@ The ones I would point at first, because they cost me something to learn:
   ([the voice guide](docs/APPLICATION_VOICE_AND_STYLE.md)). The specific constructions that give
   an AI draft away, and how to take them out without flattening your own voice into a generic one.
 
-Those are hard-won and they transfer. That is the honest pitch.
+Those are hard-won, and they travel to any search in any field. Wrapped around them is drafts-only
+as a line the tooling will not cross, a debrief loop that turns each outcome into the next rule,
+and a privacy setup built so the whole method can be published openly without leaking anyone.
 
-**Which to pick.** For the broadest, most battle-tested system, with more portals, more languages,
-more CLIs and features this does not have, reach for career-ops; it is excellent. Reach for this
-if what you want is the method itself, compact and portable, with drafts-only as the one line it
-will not cross. Different bets on the same problem, and this one is mine.
+**Which to pick.** career-ops is the broadest, most battle-tested system in this space, with more
+portals, languages and CLI integrations, and it is an excellent choice for coverage. This kit is
+the one to reach for when you want the method itself: compact, portable to any field, and built
+around drafts-only. Two strong answers to the same problem, and this is mine.
 
 ## Related projects
 
-Doing your job search in an AI CLI is a small, fast-moving field, and this kit is one narrow
+Doing your job search in an AI CLI is a small, fast-moving field, and this kit is one opinionated
 take on it. Everything below was checked live on the GitHub API on 2026-07-31: star counts,
 licences and last-commit dates are from that check, not from memory, and anything a project's
 own files did not confirm is left out rather than guessed.
@@ -293,7 +291,7 @@ you are choosing between them.
 
 | Project | What it is | Licence | Stars | Compared to this kit |
 |---|---|---|---|---|
-| [santifer/career-ops](https://github.com/santifer/career-ops) | The upstream this forked from; a full AI job-search system | MIT | ~62k | **The mature choice, and it does more.** Its liveness check spans English, German and French closure banners and deliberately treats a bot wall as uncertain rather than closed, which is the same idea as this kit's read-versus-closed tag but further along. It also has a debrief mode, a voice file, a scam-and-ghost-job check, salary and negotiation help, adapters for nine CLIs, and seventeen languages. This kit does not out-feature it and does not try to. What it offers instead is the method distilled into a compact set of transferable rules, the [`lessons/`](lessons/), with drafts-only as the one line it will not cross. See the acknowledgements for the honest comparison. |
+| [santifer/career-ops](https://github.com/santifer/career-ops) | The upstream this forked from; a full AI job-search system | MIT | ~62k | **The mature choice, and it does more.** Its liveness check spans English, German and French closure banners and deliberately treats a bot wall as uncertain rather than closed, which is the same idea as this kit's read-versus-closed tag but further along. It also has a debrief mode, a voice file, a scam-and-ghost-job check, salary and negotiation help, adapters for nine CLIs, and seventeen languages. This kit offers the complementary thing: the method distilled into a compact set of rules that transfer to any field, the [`lessons/`](lessons/), built around drafts-only as a line the tooling will not cross. See the acknowledgements for the full comparison. |
 | [MadsLorentzen/ai-job-search](https://github.com/MadsLorentzen/ai-job-search) | A Claude Code repo you fork and fill with your profile | MIT | ~29k | The closest peer. Its follow-up is drafts-only and capped, its apply step reads the compiled PDF as an ATS would and keeps an unsupported keyword as a visible gap rather than stuffing it, and it archives the exact CV and letter per outcome. It ships per-portal search CLIs with real test suites, plus Gmail and Notion sync, which this kit does not. |
 | [ARPeeketi/claude-resume-kit](https://github.com/ARPeeketi/claude-resume-kit) | Tailors an academic CV from a verified knowledge base | MIT | ~200 | The closest to this kit's anti-fabrication stance: per-achievement provenance flags, verb discipline against overclaiming, and a corrections log so a fixed error does not return. Academic LaTeX only; no scanning, tracking or liveness. |
 | [wanyichen06/LLMInternSkill](https://github.com/wanyichen06/LLMInternSkill) | Grades every resume line against your real evidence | MIT | ~260 | Sorts each claim into can-write, write-with-care, and cannot-write, then questions you on them. The same evidence discipline this kit applies to postings, applied instead to resume claims. Scoped to one hiring market; no search or tracker. |
