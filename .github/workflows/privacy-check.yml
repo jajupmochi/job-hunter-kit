@@ -1,0 +1,73 @@
+name: privacy check
+
+# The pre-push hook only protects the machine it is installed on. This runs the same
+# gates on every push and pull request, so a clone without the hook, or a contribution
+# from anyone else, still cannot introduce private data.
+#
+# The identifier list is NOT in the repository. An earlier version of the preflight
+# hard-coded the owner's real name, account handle, university and supervisors into a
+# tracked file so it could grep for them, which published the very list it existed to
+# enforce. It comes from a repository secret instead.
+#
+# SET THIS UP ONCE, or gate 1 cannot run:
+#   gh secret set PRIVATE_IDENTIFIERS < .private-identifiers
+# See .private-identifiers.example for the format.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restore the identifier list from the repository secret
+        env:
+          PRIVATE_IDENTIFIERS: ${{ secrets.PRIVATE_IDENTIFIERS }}
+        run: |
+          if [ -z "${PRIVATE_IDENTIFIERS}" ]; then
+            echo "::error::The PRIVATE_IDENTIFIERS secret is not set, so the identifier gate cannot run."
+            echo "A gate that cannot run is not a gate that passed. Set it with:"
+            echo "  gh secret set PRIVATE_IDENTIFIERS < .private-identifiers"
+            exit 1
+          fi
+          printf '%s\n' "${PRIVATE_IDENTIFIERS}" > .private-identifiers
+          echo "identifier list restored, $(grep -cvE '^[[:space:]]*(#|$)' .private-identifiers) patterns"
+
+      - name: Install gitleaks
+        run: |
+          curl -sSL -o /tmp/gitleaks.tar.gz \
+            https://github.com/gitleaks/gitleaks/releases/download/v8.24.3/gitleaks_8.24.3_linux_x64.tar.gz
+          tar -xzf /tmp/gitleaks.tar.gz -C /tmp gitleaks
+          sudo mv /tmp/gitleaks /usr/local/bin/
+
+      - name: Run the privacy preflight on the working tree
+        run: |
+          chmod +x scripts/preflight_public.sh
+          ./scripts/preflight_public.sh
+
+      - name: Scan the whole history for secrets, not just the tree
+        run: gitleaks detect --redact -v
+
+      - name: Scan the whole history for private identifiers
+        # gitleaks looks for credentials. It does not look for a person's name, which is
+        # the thing this repository actually has to keep out. A name removed from the tree
+        # but left in history is still published, so history is checked separately.
+        run: |
+          PAT=$(grep -vE '^[[:space:]]*(#|$)' .private-identifiers | paste -sd'|' -)
+          hits=$(git log --all -p --unified=0 | grep -E '^\+' | grep -InE "$PAT" || true)
+          if [ -n "$hits" ]; then
+            echo "$hits" | head -50
+            echo "::error::A private identifier appears in git history. Removing it from the tree is not enough; the history has to be rewritten."
+            exit 1
+          fi
+          echo "no private identifiers in history"
+
+      - name: Remove the identifier list
+        if: always()
+        run: rm -f .private-identifiers

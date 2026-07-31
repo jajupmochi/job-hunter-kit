@@ -1,0 +1,163 @@
+# =============================================================================
+# .gitignore — 2026.04.29_job_hunter workspace
+#
+# Defense-in-depth: gitleaks pre-commit is the primary secret guard.
+# This file pre-excludes structurally private content + generated artifacts.
+#
+# IMPORTANT: comments must be on their own lines, NOT inline after a pattern.
+# Inline comments make git treat the entire line as a literal pattern, which
+# silently breaks ignore rules (was a real bug fixed 2026-04-30).
+# =============================================================================
+
+
+# ---- Workspace privacy ----
+# Vendored career-ops / cv-santiago clones (own git history)
+upstream/
+
+# Raw sensitive data, contact PII, third-party subjective ratings
+private/
+
+# Sidecars holding private fields next to redacted docs
+*.local.md
+*.local.yml
+*.local.yaml
+
+
+# ---- Re-creatable backups ----
+# (per res/readme.md, originals stay safe locally; backup is gitignored)
+res/.original_backup_*/
+
+
+# ---- Sensitive raw exports ----
+# LinkedIn email-export HTMLs contain otpToken= auth tokens
+res/saved_jobs_may_be_obsolete_*.html
+res/saved_jobs_*.html
+
+
+# ---- Generated CV / cover-letter artifacts ----
+# (rebuild from LaTeX source)
+materials/cv/per-job/*.pdf
+materials/cv/per-job/*.aux
+materials/cv/per-job/*.fls
+materials/cv/per-job/*.fdb_latexmk
+materials/cover-letters/per-job/*.pdf
+
+
+# ---- LaTeX intermediate ----
+*.aux
+*.toc
+*.out
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.bbl
+*.blg
+*.run.xml
+
+
+# ---- Editor / OS ----
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+
+# ---- Python ----
+__pycache__/
+*.pyc
+*.pyo
+.Python
+venv/
+.venv/
+env/
+*.egg-info/
+
+
+# ---- Node.js ----
+node_modules/
+.pnpm-store/
+
+
+# ---- Secrets defense (env / keys) ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.yml
+secrets.yaml
+credentials.json
+
+
+# ---- Logs / tmp ----
+*.log
+logs/
+*.tmp
+
+# Nightly-sweep cron run logs (outputs/nightly_sweep/<date>.log)
+outputs/
+
+# Playwright MCP transient snapshots / console logs
+.playwright-mcp/
+
+
+# ---- Applicant personal documents attached to applications (PII) ----
+# Diploma / transcript / certificate scans and signed contracts: keep local, never commit.
+# Case-robust: the filesystem is case-sensitive, so capitalized variants (for example
+# *Diploma*) must be matched too, or they slip past a lowercase-only pattern. A real
+# exposure (Sam_Jia_PhD_Diploma.pdf) was found and closed on 2026-06-30.
+applications/**/*[Dd]iplome*
+applications/**/*[Dd]iplôme*
+applications/**/*[Dd]iploma*
+applications/**/*[Cc]ertificate*
+applications/**/*[Tt]ranscript*
+applications/**/*[Dd]octorant_*
+applications/**/*_[Ss]igned.pdf
+# Application photos (Bewerbungsfoto): a portrait of the applicant is personal data,
+# so it stays local like the scans above. Added 2026-07-24 for the DKFZ application.
+applications/**/*[Pp]hoto*
+applications/**/*[Bb]ewerbungsfoto*
+applications/**/*[Pp]ortrait*
+
+
+# ---- Base-template compiled PDFs ----
+# (rebuild from source; artifact-of-record PDFs live under applications/<slug>/)
+res/cv/CV_Sam_Jia/*.pdf
+
+
+# ---- UvA supporting-docs intermediate build (markdown -> pdf via build_pdf.sh) ----
+# Keep the markdown sources, build_pdf.sh, wrap_template.tex, and the combined
+# artifact-of-record PDF under the app folder. The build/ scratch dir is not tracked.
+applications/**/build/
+
+
+# ---- LibreOffice / OpenOffice lock files ----
+.~lock.*#
+
+# UvA per-doc LaTeX compile artifacts (combined PDF + CV are the artifacts of record; per-doc PDFs are intermediate)
+applications/2026-06-02-UvA-Amsterdam--Assistant_Professor_AI4Science/cover-letter.pdf
+applications/2026-06-02-UvA-Amsterdam--Assistant_Professor_AI4Science/research-statement.pdf
+applications/2026-06-02-UvA-Amsterdam--Assistant_Professor_AI4Science/teaching-statement.pdf
+applications/2026-06-02-UvA-Amsterdam--Assistant_Professor_AI4Science/references.pdf
+applications/2026-06-02-UvA-Amsterdam--Assistant_Professor_AI4Science/*.out
+applications/2026-06-02-UvA-Amsterdam--Assistant_Professor_AI4Science/*.markdown.lua
+
+# ---- Agent scratch ----
+# Task-ledger and agent memory directories. These are per-session working state, and the
+# round files embed local absolute paths, so gitleaks blocks any commit that sweeps one in.
+# It happened three times (2026-07-27, 07-28, 07-31), each time from a broad `git add` over
+# an application folder. Ignoring them removes the class rather than the instance.
+.agent/
+
+# ---- This kit is the TOOL only ----
+# Your own applications, CVs, letters and contacts belong in a PRIVATE repository.
+applications/
+res/
+materials/
+outputs/
+private/
+
+# Your own identifier list for scripts/preflight_public.sh
+.private-identifiers

@@ -1,0 +1,62 @@
+# =============================================================================
+# Gitleaks config — 2026.04.29 job_hunter workspace
+# Pre-commit: gitleaks protect --staged
+# Pre-push:  trufflehog full-history sweep (Phase 5 install)
+# =============================================================================
+
+title = "job_hunter secrets / private-info scan"
+
+# Inherit gitleaks defaults (~150 patterns: AWS / GCP / Azure / GitHub tokens,
+# SSH keys, Slack webhooks, JWT, database connection strings, etc.)
+[extend]
+useDefault = true
+
+# =============================================================================
+# Custom rules — Sam-specific local-machine leakage patterns
+# =============================================================================
+
+[[rules]]
+id = "local-home-path"
+description = "Absolute paths revealing user's home directory"
+regex = '''/home/sam(/[^\s'"`]*)?'''
+keywords = ["/home/sam"]
+
+[[rules]]
+id = "local-volume-mount"
+description = "External volume / UUID mount paths"
+regex = '''/(media|mnt)/(sam/[^\s'"`]+|[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/[^\s'"`]+)'''
+keywords = ["/media/sam", "/mnt/"]
+
+[[rules]]
+id = "shell-prompt-hostname"
+description = "Shell prompts containing local username@hostname"
+regex = '''sam@[A-Za-z0-9._-]+(:[~/]|\s|$)'''
+keywords = ["sam@"]
+
+[[rules]]
+id = "ssh-private-key-content"
+description = "Inline SSH private key content (defense beyond default)"
+regex = '''-----BEGIN (RSA|OPENSSH|EC|DSA|PGP) PRIVATE KEY-----'''
+keywords = ["BEGIN", "PRIVATE KEY"]
+
+# =============================================================================
+# Allowlist — public Sam info already on website / published CV / LinkedIn
+# These will not abort commits.
+# =============================================================================
+
+[allowlist]
+description = "Public Sam info (intentionally on samferreira.github.io or published CV PDFs)"
+regexes = [
+    # Public emails (already in CV / website footer)
+    '''samferreira@gmail\.com''',
+    '''sam\.jia@lakeside\.ch''',
+    '''sam\.jia@an applied-sciences university\.ch''',
+    '''sam\.jia@insa-rouen\.fr''',
+    # Public GitHub handle
+    '''github\.com/samferreira''',
+    # Public phone numbers (already in CV)
+    '''\+41\s*78\s*224\s*14\s*19''',
+    '''\+33\s*7\s*70\s*27\s*12\s*04''',
+    # Public address (already in CV)
+    '''Schützenmattstrasse\s*14''',
+]

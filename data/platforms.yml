@@ -1,0 +1,180 @@
+# Job-search platforms.
+#
+# A starting catalogue, not a recommendation and not a ranking. Which of these
+# is worth your time depends entirely on your field, your seniority and where
+# you are allowed to work, and none of that is knowable from here.
+#
+# `kind` says what a platform IS, so an agent can pick the right retrieval
+# method rather than treating every URL the same:
+#
+#   aggregator   a search engine over many employers' postings
+#   ats          applicant tracking system; employers host boards on it, and
+#                most expose a JSON endpoint, which is the reliable way in
+#   academic     university, institute and research postings
+#   regional     concentrated in one country or region
+#   community    forums, newsletters and social platforms where openings are
+#                mentioned before or instead of being posted formally
+#
+# `access` says what it takes to read it, which decides whether a plain fetch
+# works or a logged-in browser is required:
+#
+#   open         server-rendered, a plain HTTP fetch returns the postings
+#   json         has a documented or discoverable JSON endpoint
+#   spa          JavaScript-rendered; a plain fetch returns an empty shell
+#   login        requires an account
+#
+# ADD YOUR OWN. This file is meant to be edited. The entries below are the ones
+# that are broad enough to be a sensible default for most readers; anything
+# specific to one country, field or language belongs in your own copy.
+
+platforms:
+
+  # --- Applicant tracking systems -------------------------------------------
+  # These matter more than aggregators. When you know an employer's name, going
+  # straight to their ATS board gives you the authoritative list, today, with no
+  # staleness. Most of these expose JSON, which is why they are listed first.
+
+  - name: Greenhouse
+    kind: ats
+    access: json
+    url: https://boards.greenhouse.io/
+    board_pattern: https://job-boards.greenhouse.io/<company>
+    api_pattern: https://boards-api.greenhouse.io/v1/boards/<company>/jobs
+    notes: |
+      The JSON endpoint returns every open posting with ids and dates. Append
+      ?content=true to get the advert bodies in the same call.
+
+  - name: Lever
+    kind: ats
+    access: json
+    url: https://jobs.lever.co/
+    board_pattern: https://jobs.lever.co/<company>
+    api_pattern: https://api.lever.co/v0/postings/<company>?mode=json
+
+  - name: Workday
+    kind: ats
+    access: json
+    board_pattern: https://<tenant>.wdN.myworkdayjobs.com/<site>
+    api_pattern: https://<tenant>.wdN.myworkdayjobs.com/wday/cxs/<tenant>/<site>/jobs
+    notes: |
+      The web page is an empty JavaScript shell, so fetch the cxs endpoint
+      instead. It takes a POST with a JSON body and paginates by offset.
+
+  - name: SmartRecruiters
+    kind: ats
+    access: json
+    board_pattern: https://careers.smartrecruiters.com/<company>
+    api_pattern: https://api.smartrecruiters.com/v1/companies/<company>/postings
+
+  - name: Ashby
+    kind: ats
+    access: json
+    board_pattern: https://jobs.ashbyhq.com/<company>
+    api_pattern: https://api.ashbyhq.com/posting-api/job-board/<company>
+
+  - name: Personio
+    kind: ats
+    access: open
+    board_pattern: https://<company>.jobs.personio.de/
+
+  - name: Recruitee
+    kind: ats
+    access: json
+    api_pattern: https://<company>.recruitee.com/api/offers/
+
+  # --- Aggregators ----------------------------------------------------------
+
+  - name: LinkedIn
+    kind: aggregator
+    access: login
+    url: https://www.linkedin.com/jobs/
+    notes: |
+      Also a community channel. People announce openings in posts before the
+      formal advert appears, and a post names a human you can write to, which
+      an advert usually does not.
+
+  - name: Indeed
+    kind: aggregator
+    access: spa
+    url: https://www.indeed.com/
+
+  - name: Glassdoor
+    kind: aggregator
+    access: spa
+    url: https://www.glassdoor.com/
+
+  - name: Google Jobs
+    kind: aggregator
+    access: spa
+    url: https://www.google.com/search?q=<query>&ibp=htl;jobs
+
+  - name: Wellfound
+    kind: aggregator
+    access: spa
+    url: https://wellfound.com/jobs
+    notes: Startup-weighted.
+
+  - name: Remote OK
+    kind: aggregator
+    access: json
+    url: https://remoteok.com/
+    api_pattern: https://remoteok.com/api
+
+  - name: We Work Remotely
+    kind: aggregator
+    access: open
+    url: https://weworkremotely.com/
+
+  # --- Academic and research ------------------------------------------------
+
+  - name: EURAXESS
+    kind: academic
+    access: open
+    url: https://euraxess.ec.europa.eu/jobs
+    notes: European research posts, including fellowships.
+
+  - name: jobs.ac.uk
+    kind: academic
+    access: open
+    url: https://www.jobs.ac.uk/
+
+  - name: AcademicTransfer
+    kind: academic
+    access: open
+    url: https://www.academictransfer.com/en/
+
+  - name: HigherEdJobs
+    kind: academic
+    access: open
+    url: https://www.higheredjobs.com/
+
+  - name: Nature Careers
+    kind: academic
+    access: open
+    url: https://www.nature.com/naturecareers
+
+  - name: Times Higher Education
+    kind: academic
+    access: open
+    url: https://www.timeshighereducation.com/unijobs/
+
+  - name: myScience
+    kind: academic
+    access: open
+    url: https://www.myscience.org/
+    notes: Has per-country sub-sites.
+
+  # --- Community ------------------------------------------------------------
+
+  - name: Hacker News "Who is hiring"
+    kind: community
+    access: open
+    url: https://news.ycombinator.com/submitted?id=whoishiring
+    notes: A monthly thread. Posted by people who do the hiring.
+
+  - name: Field-specific mailing lists and newsletters
+    kind: community
+    access: open
+    notes: |
+      Most fields have one or two lists where openings circulate before they are
+      advertised. Find yours and subscribe; it is the cheapest channel there is.

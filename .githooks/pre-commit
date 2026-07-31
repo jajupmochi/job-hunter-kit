@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# =============================================================================
+# pre-commit hook — 2026.04.29_job_hunter
+# Runs gitleaks against staged changes; aborts commit on detection.
+# =============================================================================
+
+set -e
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+CONFIG="$REPO_ROOT/.gitleaks.toml"
+
+# Resolve gitleaks binary (PATH or ~/.local/bin)
+GITLEAKS=""
+if command -v gitleaks >/dev/null 2>&1; then
+    GITLEAKS="gitleaks"
+elif [ -x "$HOME/.local/bin/gitleaks" ]; then
+    GITLEAKS="$HOME/.local/bin/gitleaks"
+fi
+
+if [ -z "$GITLEAKS" ]; then
+    if [ -z "${SKIP_GITLEAKS_OK:-}" ]; then
+        echo "⚠️  pre-commit warning: gitleaks not installed; secret scan SKIPPED."
+        echo "    install: scripts/install-gitleaks.sh"
+        echo "    silence: export SKIP_GITLEAKS_OK=1"
+    fi
+    exit 0
+fi
+
+# Gitleaks 'protect' = staged-only, fast (vs 'detect' = full history)
+if ! "$GITLEAKS" protect --staged --redact --config "$CONFIG" --no-banner; then
+    cat <<'EOF'
+
+────────────────────────────────────────────────────────────────────────────
+❌ pre-commit BLOCKED — secret or private path detected (see report above)
+────────────────────────────────────────────────────────────────────────────
+What to do:
+  1. Redact the leaked content in your file, then re-stage and re-commit.
+  2. If the value is genuinely public (already on your website / published CV),
+     add it to the [allowlist] in .gitleaks.toml.
+  3. Emergency bypass (NOT recommended):  SKIP_GITLEAKS=1 git commit ...
+────────────────────────────────────────────────────────────────────────────
+EOF
+    exit 1
+fi
+
+exit 0

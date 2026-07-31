@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Refuse to push if anything private is in the tree. This is the last gate before the
+# repository becomes public and irreversible, so it fails closed: any error, any missing
+# tool, any unexpected exit code blocks the push.
+set -uo pipefail
+cd "$(git rev-parse --show-toplevel)" || exit 1
+echo "pre-push: running the privacy preflight..."
+if [ ! -x scripts/preflight_public.sh ]; then
+  echo "pre-push: BLOCKED - scripts/preflight_public.sh is missing or not executable."
+  exit 1
+fi
+if ! ./scripts/preflight_public.sh; then
+  echo
+  echo "pre-push: BLOCKED - the privacy preflight failed. Nothing was pushed."
+  echo "Fix the findings above. To override you must know exactly why, and then:"
+  echo "  git push --no-verify"
+  exit 1
+fi
+echo "pre-push: preflight passed, continuing."

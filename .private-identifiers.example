@@ -1,0 +1,28 @@
+# Your own private identifiers, one grep pattern per line.
+#
+# scripts/preflight_public.sh greps the whole tree for these and refuses to let
+# you publish if any of them appears. Copy this file to .private-identifiers,
+# which is gitignored, and put your real values in it.
+#
+# The point of keeping them out of the tracked script: an earlier version of the
+# preflight hard-coded them, which published the very list it existed to enforce.
+#
+# Blank lines and lines starting with # are ignored. Everything else is treated
+# as an extended regular expression, so escape dots in domains.
+
+# Your name, and any spelling of it that appears in your documents
+Your Full Name
+Yourname
+
+# Your account handles
+your-github-handle
+
+# Your institutions, employers and their domains
+Your University
+youruniversity\.edu
+
+# People you work with, whose names must never appear in a public repo
+Your Supervisor
+
+# Your project and product names
+YOURPROJECT

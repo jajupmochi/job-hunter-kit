@@ -1,0 +1,11 @@
+Nightly sweep, the half that needs a browser. The OS crontab already ran scripts/nightly_sweep.sh headlessly tonight, covering the channels that work without one, so do NOT re-run that. Adapt the axes, the locations and the language of the summary to your own search before using this file.
+
+(1) BROWSER CHANNELS. Load the browser tools, take the already-connected browser without asking which one, and run a READ-ONLY pass over the channels that require a login, per docs/AUTORUN_SWEEP_CHARTER.md. Take the platform's own personalised recommendations FIRST, because they are free and nobody else's search reproduces them. Then a keyword search on your own axes and locations. Then recent "we are hiring" posts, which name a human where an advert does not. READ ONLY: never connect, apply, message, or send. De-duplicate against the tracker and today's sweep document by posting id, never by title. Keep only roles that are on-axis and verified open today. Append genuinely new finds to today's sweep document under a clearly labelled section, and commit locally.
+
+(2) IF THE BROWSER IS NOT REACHABLE, write "browser channels not reachable this run" and carry on with everything else. Never report the account as logged out on the strength of a failed fetch. A failed fetch is a fact about the fetch.
+
+(3) SUMMARY. Read today's sweep document, then post a short summary in this session: how many roles are new, the ranked shortlist, anything that needs a decision from you, and the local commit id. Also read your reminders file and surface any reminder due today or earlier, leaving it for you to action rather than acting on it yourself. Then record that the summary has been posted, so a later run does not repeat it.
+
+(4) SELF-RENEW, if your scheduler expires recurring jobs. Read the last-armed timestamp from the sweep state file. If it is 5 or more days old, re-arm now using this same file as the prompt, delete the previous job, and write the new job id and timestamp back to the state file. If it is newer than that, skip.
+
+DRAFTS ONLY throughout. Nothing is submitted, sent, posted or connected. You send everything yourself.
