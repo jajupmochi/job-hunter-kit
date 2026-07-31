@@ -26,7 +26,7 @@ selfless() { grep -v '^\./scripts/preflight_public\.sh:'; }
 # allowed only on a line that names this repository. Empty when there is no remote, in
 # which case nothing is allowed, which is the safe direction.
 OWNER_REPO=$(git config --get remote.origin.url 2>/dev/null \
-             | sed -E 's#^.*[:/]([^/:]+/[^/]+?)(\.git)?$#\1#')
+             | sed -E 's#\.git$##; s#^.*[:/]([^/:]+/[^/]+)$#\1#')
 own_repo_url() {
   if [ -n "${OWNER_REPO:-}" ]; then grep -vF "$OWNER_REPO"; else cat; fi
 }
@@ -45,11 +45,23 @@ else
   PAT=$(grep -vE '^\s*(#|$)' .private-identifiers | paste -sd'|' -)
   if [ -z "$PAT" ]; then
     bad ".private-identifiers is empty; put at least your name and account handle in it"
-  elif grep -rInE "$PAT" "${IGNORE[@]}" . | selfless | own_repo_url | grep -q . ; then
-    grep -rInE "$PAT" "${IGNORE[@]}" . | selfless | own_repo_url
-    bad "a private identifier appears above"
   else
-    ok "none of your listed identifiers appear"
+    # grep exits 0 on a match, 1 on no match, and 2 on an ERROR. An unbalanced bracket in
+    # .private-identifiers makes the whole alternation invalid, and the previous form read
+    # that as "nothing found" and printed ok: the gate announced a pass having searched
+    # nothing. Exit 2 is now a failure, which is the only safe reading.
+    hits=$(grep -rInE "$PAT" "${IGNORE[@]}" . 2>&1); rc=$?
+    if [ "$rc" -ge 2 ]; then
+      echo "$hits" | head -5
+      bad "the identifier pattern is invalid, so this gate searched nothing; fix .private-identifiers"
+    else
+      hits=$(printf '%s' "$hits" | selfless | own_repo_url)
+      if [ -n "$hits" ]; then
+        echo "$hits"; bad "a private identifier appears above"
+      else
+        ok "none of your listed identifiers appear"
+      fi
+    fi
   fi
 fi
 
