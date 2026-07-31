@@ -162,6 +162,26 @@ gh secret set PRIVATE_IDENTIFIERS < .private-identifiers
 
 **If you fork this for your own search, keep your applications private.**
 
+### Setting up the CI check
+
+The identifier list is deliberately not in the repository, so CI reads it from a repository
+secret. **Set it once, or the CI job fails**, on purpose: a check that cannot run has not
+passed, and a green tick that means nothing is worse than a red one.
+
+```bash
+gh secret set PRIVATE_IDENTIFIERS < .private-identifiers
+```
+
+The secret holds the same lines as your local `.private-identifiers`: your name, your handles,
+your institutions, the people you work with, your project names. **GitHub encrypts it and only
+the Actions runner can read it**; it never appears in logs or in the repository. The workflow
+writes it to a file at the start of the run and deletes it at the end.
+
+There is nothing secret in that list, which is the point. It is a list of words that must not
+appear in the published files, and keeping it out of the tree is the only way a check for them
+does not itself publish them.
+
+
 ## Contributing
 
 Issues and pull requests are welcome, especially:
@@ -173,6 +193,27 @@ Issues and pull requests are welcome, especially:
 
 Please do not open a pull request containing real people's names or contact details, including
 your own contacts. The CI check will refuse it, and that is it working correctly.
+
+## Acknowledgements
+
+**This kit began as a fork of [`santifer/career-ops`](https://github.com/santifer/career-ops)**
+(MIT), and it would not exist without it. That project's idea, that a job search belongs in your
+own AI coding CLI rather than in somebody's SaaS, is the whole premise here.
+
+What came from there, specifically: **the mode structure itself**, the A-to-F evaluation rubric
+that became [`modes/evaluate.md`](modes/evaluate.md), and the first versions of scan, outreach,
+follow-up, tracker, interview prep, the deep-dive on a single company, the profile template and
+the shared context file. Several of those were used almost unchanged for months before being
+rewritten here.
+
+What is different here: the drafts-only rule as an absolute rather than an option, the
+[`lessons/`](lessons/) library where mistakes become rules,
+[`modes/debrief.md`](modes/debrief.md), and the privacy tooling. Those grew out of one search
+running for several months and getting things wrong.
+
+**If you are choosing between the two, start with career-ops.** It is far more mature, it has a
+much larger community, and it covers more ground. This kit is narrower and more opinionated,
+particularly about never letting an agent send anything.
 
 ## Licence
 

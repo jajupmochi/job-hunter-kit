@@ -148,6 +148,23 @@ gh secret set PRIVATE_IDENTIFIERS < .private-identifiers
 
 **如果你 fork 这个来跑自己的求职，把申请材料放在私有仓库里。**
 
+### 配置 CI 检查
+
+标识符清单故意不放在仓库里，所以 CI 从 repository secret 里读。**设置一次，否则 CI 会失败** ——
+这是故意的：跑不起来的检查不等于通过的检查，而一个没有意义的绿勾比一个红叉更糟。
+
+```bash
+gh secret set PRIVATE_IDENTIFIERS < .private-identifiers
+```
+
+这个 secret 的内容和你本地的 `.private-identifiers` 一样：你的姓名、账号、机构、和你共事的人、你的
+项目名。**GitHub 会加密它，只有 Actions 运行器能读**，它不会出现在日志里，也不会进仓库。工作流在
+开始时把它写成文件，结束时删掉。
+
+那份清单里没有秘密，而这正是关键。它是一串"不能出现在已发布文件里"的词，而把它挡在代码树之外，是让
+一个检查这些词的脚本本身不去发布它们的唯一办法。
+
+
 ## 参与
 
 欢迎 issue 和 PR，尤其是：
@@ -157,6 +174,23 @@ gh secret set PRIVATE_IDENTIFIERS < .private-identifiers
 - **新的 mode**，覆盖还没覆盖到的环节。
 
 请不要提交含有真实人名或联系方式的 PR，包括你自己的联系人。CI 会拒绝，那正是它在正常工作。
+
+## 致谢
+
+**这套东西最早是从 [`santifer/career-ops`](https://github.com/santifer/career-ops)（MIT）fork 出来
+的**，没有它就没有这个仓库。那个项目的核心想法 —— 求职应该跑在你自己的 AI 编程命令行里，而不是别人
+的 SaaS 里 —— 就是这里的全部前提。
+
+具体拿了什么：**mode 这个结构本身**、后来变成 [`modes/evaluate.md`](modes/evaluate.md) 的 A 到 F
+评分框架，以及搜索、联系人、跟进、记录、面试准备、单个公司深挖、档案模板和共享上下文这几个文件的最初
+版本。其中好几个几乎原样用了好几个月，才在这里被重写。
+
+这里不一样的地方：把"只起草"从一个选项变成绝对规则、把错误变成规则的 [`lessons/`](lessons/)、
+[`modes/debrief.md`](modes/debrief.md)，以及那套隐私工具。这些是一次持续几个月、不断犯错的真实求职
+里长出来的。
+
+**如果你在两者之间选，先看 career-ops。** 它成熟得多，社区大得多，覆盖的东西也更全。这个仓库更窄、
+更有主见，特别是在"绝不让 agent 替你发东西"这件事上。
 
 ## 许可
 
